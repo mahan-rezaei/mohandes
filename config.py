@@ -3,4 +3,4 @@ from api import users
 
 
 app = FastAPI()
-app.include_router(users, tags=['Users'])
+app.include_router(users.router, tags=['Users'])
