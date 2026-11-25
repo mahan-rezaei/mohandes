@@ -2,10 +2,11 @@ from fastapi import APIRouter, status, HTTPException
 from dependencies import SessionDep
 from schemas.users import UserCreate
 from sqlmodel import select
-from models.users import User
+from models.users import User, OTP
 from core.security import Hasher
 from core.jwt_auth import sign_jwt
 from fastapi.background import BackgroundTasks
+from services.smtp import send_email
 
 
 router = APIRouter(prefix="/users")
@@ -22,5 +23,10 @@ async def register_user(user: UserCreate, session: SessionDep, background_task: 
     session.add(user_obj)
     await session.commit()
     await session.refresh(user_obj)
+    otp = OTP.generate(user_obj.email)
+    session.add(otp)
+    await session.commit()
+    await session.refresh(otp)
+    background_task.add_task(send_email, user_obj.email, otp.code)
     token = sign_jwt(user_obj.email, user_obj.id)
     return token
