@@ -3,7 +3,7 @@ from fastapi_mail import MessageType, MessageSchema, FastMail, ConnectionConfig
 
 conf = ConnectionConfig(
     MAIL_USERNAME ="mahanrezaei859@gmail.com",
-    MAIL_PASSWORD = "mnvpyqngdzixqltc",
+    MAIL_PASSWORD = "qdlnjszxhqooqjjg",
     MAIL_FROM = "mahanrezaei859@gmail.com",
     MAIL_PORT = 465,
     MAIL_SERVER = "smtp.gmail.com",

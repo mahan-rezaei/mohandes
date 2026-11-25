@@ -11,6 +11,8 @@ class User(SQLModel, table=True):
     email: str = Field(unique=True, index=True)
     password: str
 
+    is_verified: bool = Field(default=False, nullable=True)
+
     created_at: datetime = Field(default_factory=datetime.now)
     updated_at: datetime = Field(default_factory=datetime.now)
 
