@@ -16,3 +16,7 @@ class UserRead(UserBase):
     id: int
     created_at: datetime
     updated_at: datetime
+
+
+class UserVerify(UserBase):
+    code: str

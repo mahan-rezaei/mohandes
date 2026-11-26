@@ -34,3 +34,8 @@ async def register_user(user: UserCreate, session: SessionDep, background_task: 
 
     background_task.add_task(send_email, user_obj.email, otp.code)
     return sign_jwt(user_obj.email, user_obj.id)
+
+
+@router.post('/verify', status_code=status.HTTP_200_OK)
+async def verify_user():
+    pass
