@@ -7,7 +7,7 @@ import secrets
 class User(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     full_name: str = Field(max_length=258)
-    username: str = Field(max_length=128, unique=True, index=True)
+    username: str = Field(max_length=128, index=True)
     email: str = Field(unique=True, index=True)
     password: str
 

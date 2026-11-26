@@ -18,5 +18,5 @@ class UserRead(UserBase):
     updated_at: datetime
 
 
-class UserVerify(UserBase):
+class UserVerify(BaseModel):
     code: str
