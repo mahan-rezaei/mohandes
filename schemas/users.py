@@ -20,3 +20,8 @@ class UserRead(UserBase):
 
 class UserVerify(BaseModel):
     code: str
+
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str

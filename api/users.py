@@ -60,3 +60,7 @@ async def verify_user(code: UserVerify, session: SessionDep, current_user: User=
 
     return {'detail': "user verified successfully."}
 
+
+@router.post('/login', status_code=status.HTTP_200_OK)
+async def login_user():
+    pass
