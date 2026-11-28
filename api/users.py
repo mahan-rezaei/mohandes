@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status, HTTPException
 from fastapi.params import Depends
 from dependencies import SessionDep
-from schemas.users import UserCreate, UserVerify
+from schemas.users import UserCreate, UserVerify, UserLogin
 from sqlmodel import select, desc
 from models.users import User, OTP
 from core.security import Hasher
@@ -62,5 +62,15 @@ async def verify_user(code: UserVerify, session: SessionDep, current_user: User=
 
 
 @router.post('/login', status_code=status.HTTP_200_OK)
-async def login_user():
-    pass
+async def login_user(user_data: UserLogin, session: SessionDep):
+    user_instance = await session.exec(select(User).where(User.email==user_data.email))
+    user_instance = user_instance.first()
+
+    if not user_instance:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail="User with this email does not exist.")
+    if not Hasher.verify_password(user_data.password, user_instance.password):
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail="password is incorrect.")
+
+    return sign_jwt(user_instance.email, user_instance.id)
