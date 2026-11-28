@@ -67,10 +67,13 @@ async def login_user(user_data: UserLogin, session: SessionDep):
     user_instance = user_instance.first()
 
     if not user_instance:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail="User with this email does not exist.")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="Invalid email or password.")
+    if not user_instance.is_verified:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,
+                            detail="please verify your email first.")
     if not Hasher.verify_password(user_data.password, user_instance.password):
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
-                            detail="password is incorrect.")
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,
+                            detail="Invalid email or password.")
 
     return sign_jwt(user_instance.email, user_instance.id)
